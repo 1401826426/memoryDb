@@ -1,4 +1,4 @@
-package com.fei.memory.db;
+package com.fei.memory.db.btree;
 
 @SuppressWarnings("unchecked")
 class LeafNode <K extends Comparable<K>,V> extends BNode<K,V>{
