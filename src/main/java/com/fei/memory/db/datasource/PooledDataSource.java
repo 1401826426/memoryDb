@@ -8,60 +8,78 @@ import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
-public class PooledDataSource implements DataSource{
+public class PooledDataSource implements DataSource {
+
+	private DataSource dataSource;
+
+	private Pool pool;
+	protected int poolMaximumActiveConnections = 10;
+	protected int poolMaximumIdleConnections = 5;
+	protected int poolMaximumCheckoutTime = 20000;
+	protected int poolTimeToWait = 20000;
+	protected int poolMaximumLocalBadConnectionTolerance = 3;
+	protected String poolPingQuery = "NO PING QUERY SET";
+	protected boolean poolPingEnabled;
+	protected int poolPingConnectionsNotUsedFor;
 
 	@Override
 	public PrintWriter getLogWriter() throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		return dataSource.getLogWriter();
 	}
 
 	@Override
 	public void setLogWriter(PrintWriter out) throws SQLException {
-		// TODO Auto-generated method stub
-		
+		dataSource.setLogWriter(out);
 	}
 
 	@Override
 	public void setLoginTimeout(int seconds) throws SQLException {
-		// TODO Auto-generated method stub
-		
+		dataSource.setLoginTimeout(seconds);
 	}
 
 	@Override
 	public int getLoginTimeout() throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
+		return dataSource.getLoginTimeout();
 	}
 
 	@Override
 	public Logger getParentLogger() throws SQLFeatureNotSupportedException {
-		// TODO Auto-generated method stub
-		return null;
+		return dataSource.getParentLogger();
 	}
 
 	@Override
 	public <T> T unwrap(Class<T> iface) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		return dataSource.unwrap(iface);
 	}
 
 	@Override
 	public boolean isWrapperFor(Class<?> iface) throws SQLException {
-		// TODO Auto-generated method stub
-		return false;
+		return dataSource.isWrapperFor(iface);
 	}
 
 	@Override
 	public Connection getConnection() throws SQLException {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
 	@Override
 	public Connection getConnection(String username, String password) throws SQLException {
-		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public void close(PooledConnection conn) throws SQLException {
+		pool.activeConns.remove(conn) ; 
+		if(pool.idleConns.size() < poolMaximumIdleConnections && conn.isValid()){
+			if(!conn.getConnection().getAutoCommit()){
+				conn.getConnection().rollback();
+			}
+			pool.idleConns.add(conn.getConnection()) ; 
+		}else{
+			
+		}
+		
+//		pool.getIdleConn().add(conn);
 	}
 
 }
