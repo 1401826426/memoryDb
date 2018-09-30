@@ -5,6 +5,7 @@ import java.util.List;
 
 public class SqlExecutor<V> {
 	
+	@SuppressWarnings("unused")
 	private List<SqlCommand> list = new LinkedList<>() ; 
 
 	public void insert(V v) {

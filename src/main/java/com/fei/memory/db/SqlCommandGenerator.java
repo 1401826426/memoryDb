@@ -13,7 +13,7 @@ public class SqlCommandGenerator {
 	public SqlCommand generate(Object obj,Command command){
 		BeanDescription beanDescription = BeanDescriptionParser.getInstance().parse(obj.getClass()) ; 
 		List<PropertyDescription> pds = beanDescription.getPds() ;
-		for(PropertyDescription pd:pds){
+		for(@SuppressWarnings("unused") PropertyDescription pd:pds){
 			
 		}
 		return null ; 
