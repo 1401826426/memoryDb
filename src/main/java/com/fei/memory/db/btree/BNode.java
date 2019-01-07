@@ -83,6 +83,10 @@ abstract class BNode <K extends Comparable<K>,V>{
 		this.size += bNode.size ; 
 	}
 	
+	/**
+	 * 删除掉pos位置的数据
+	 * @param pos
+	 */
 	protected void leftMove(int pos){
 		Object data = this.getData()[pos] ; 
 		if(data instanceof BNode){
@@ -95,7 +99,10 @@ abstract class BNode <K extends Comparable<K>,V>{
 	}
 	
 	
-
+    /**
+     * 把pos位置空出来
+     * @param pos
+     */
 	protected void rightMove(int pos){
 		System.arraycopy(this.keys, pos, this.keys, pos+1, size-pos);
 		System.arraycopy(this.getData(), pos, this.getData(), pos+1, size-pos);
